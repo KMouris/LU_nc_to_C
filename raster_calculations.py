@@ -16,7 +16,7 @@ except ModuleNotFoundError as b:
 
 # import additional python libraries
 try:
-    import gdal
+    from osgeo import gdal
     from osgeo import ogr
     import matplotlib.pyplot as plt
     import numpy as np

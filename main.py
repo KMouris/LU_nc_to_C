@@ -2,7 +2,7 @@
 The module extracts a set of .nc files and cuts them to the given shapefile. The raster files have to contain bands with
 a percentual share for the land use class (PFT0 - PFT32). The land use bands are projected to the C-Factor according to
 the given csv file (c_fac_file) and are merged to one band which contains the sum of C-Factors based on their share.
-The Raster is saved to a latitude-longitude-projection and later transfered to the target CRS (EPSG:32634). Based on the
+The Raster is saved to a latitude-longitude-projection and later transferred to the target CRS (EPSG:32634). Based on the
 snap file (snapraster_file) the area is interpolated (gdal_grid; invdistnn) and clipped along the given shape file. The
 final file is exported in the export folder.
 
@@ -66,7 +66,7 @@ for i, nc_file in enumerate(filenames):
         transform_to_target_crs(season_file_epsg4326, season_file_epsg32634, "EPSG:32634")
 
         # Save raster data to an array
-        print(season_alias + ", Importng Raster ...")
+        print(season_alias + ", Importing Raster ...")
         original_array = rc.raster_to_array(season_file_epsg32634, mask=False)
 
         # Convert all -9999 No data cells into numpy nan values

@@ -16,6 +16,8 @@ try:
     import numpy as np
     import pandas as pd
     import rasterio as rio
+    from rasterio import warp as wrp
+    from rasterio.enums import Resampling
 
     import matplotlib as math
     from osgeo import gdal
@@ -27,7 +29,7 @@ except ModuleNotFoundError as b:
 
 """Input variable description: 
 * Decision variables 
-- USELOG: boolean, which determine wheter the temporary files are erased after the clipped file is finalized
+- USELOG: boolean, which determine whether the temporary files are erased after the clipped file is finalized
 
 * Input files:
 - c_fac_file: string, path for the land cover factor correlation (.csv format)
@@ -39,15 +41,14 @@ except ModuleNotFoundError as b:
 - tmp_folder: string, path where the temporary files are stored (These will be erased if USELOG=False)
 """
 
-USELOG = False
+USELOG = True
 
-c_fac_file = r'../Daten/c-factor/land_cover.csv'
-xyz_csv_file = r'file.csv'
-shape_file = r'../Daten/Shape_Catchments/totalboundary.shp'
+c_fac_file = r'C:\Users\Mouris\Desktop\glob_LU_to_C\Data\land_cover.csv'
+xyz_csv_file = r'C:\Users\Mouris\Desktop\glob_LU_to_C\file.csv'
+shape_file = r'C:\Users\Mouris\Desktop\glob_LU_to_C\Data\totalboundary.shp'
 
-snapraster_file = r'../Daten/Rasters/Cp_Mean_snap.tif'
+snapraster_file = r'C:\Users\Mouris\Desktop\glob_LU_to_C\Data\Cp_Mean_snap.tif'
 
-lu_path = r'../Daten/Projected_Land_Use'
-lu_path = r'../Daten/szenario/SSP1_RCP2_6'
+lu_path = r'C:\Users\Mouris\Desktop\glob_LU_to_C\Data\nc_files'
 export_folder = r'export'
 tmp_folder = r'tmp'

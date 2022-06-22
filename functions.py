@@ -1,9 +1,9 @@
-
 from config import *
+
 
 def extract_nc_data_to_array(nc_path):
     """
-    Extracts the dataset from an nc file
+    Extracts the dataset from nc file
 
     :param nc_path: string, with the path to the nc file
     :return: nc.Dataset, with the nc bands; int, with the width in longitude degree; int, with the heigh in latitude degree
@@ -13,6 +13,7 @@ def extract_nc_data_to_array(nc_path):
     ds_lat = ds.variables['latitude'].shape[0]
 
     return ds, ds_lon, ds_lat
+
 
 def apply_cfac_to_array(ds, ds_lon, ds_lat, c_fac_arr):
     """
@@ -30,8 +31,8 @@ def apply_cfac_to_array(ds, ds_lon, ds_lat, c_fac_arr):
 
     for pft_nr in range(len(ds.variables) - 2):
         # Apply each C-Factors share to every pixel
-        r_fac_summer = ds.variables["PFT" + str(pft_nr)][:]/100 * c_fac_arr.loc[pft_nr][1]
-        r_fac_winter = ds.variables["PFT" + str(pft_nr)][:]/100 * c_fac_arr.loc[pft_nr][2]
+        r_fac_summer = ds.variables["PFT" + str(pft_nr)][:] / 100 * c_fac_arr.loc[pft_nr][1]
+        r_fac_winter = ds.variables["PFT" + str(pft_nr)][:] / 100 * c_fac_arr.loc[pft_nr][2]
 
         # Data is fipped by 90° therefore rotate it
         merged_raster_summer += np.transpose(r_fac_summer)
@@ -51,7 +52,8 @@ def export_to_tif(ds_lon, ds_lat, merged_raster, export_file):
     :param export_file: str, with the new path to the GEOTIFF
     """
     # create the transform for the base matrix in lat/long projection
-    transform = rio.transform.Affine.translation(-180, 90) * Affine.scale(0.05000000120000000492, -0.05000000119999999798)
+    transform = rio.transform.Affine.translation(-180, 90) * rio.transform.Affine.scale(0.05000000120000000492,
+                                                                          -0.05000000119999999798)
 
     src_crs = '+proj=latlong'
     dst_crs = "EPSG:32634"
@@ -64,8 +66,9 @@ def export_to_tif(ds_lon, ds_lat, merged_raster, export_file):
         'transform': transform
     }
 
-    with rasterio.open(export_file, 'w', crs=dst_crs, **profile) as dst:
+    with rio.open(export_file, 'w', crs=dst_crs, **profile) as dst:
         dst.write(merged_raster, 1)
+
 
 def transform_to_target_crs(src_file, dst_file, dst_crs):
     """
@@ -75,12 +78,12 @@ def transform_to_target_crs(src_file, dst_file, dst_crs):
     :param dst_file: str, with the path to the new GEOTIFF
     :param dst_crs: str, with the new crs system
     """
-    with rasterio.open(src_file) as src:
+    with rio.open(src_file) as src:
         # transform for input raster
         src_transform = src.transform
 
         # calculate the transform matrix for the output
-        dst_transform, width, height = rio.warp.calculate_default_transform(
+        dst_transform, width, height = wrp.calculate_default_transform(
             src.crs,  # source CRS
             dst_crs,  # destination CRS
             src.width,  # column count
@@ -91,7 +94,6 @@ def transform_to_target_crs(src_file, dst_file, dst_crs):
         if USELOG:
             print("Source Transform:\n", src_transform, '\n')
             print("Destination Transform:\n", dst_transform)
-
 
         # set properties for output
         dst_kwargs = src.meta.copy()
@@ -105,17 +107,18 @@ def transform_to_target_crs(src_file, dst_file, dst_crs):
             }
         )
 
-        with rasterio.open(dst_file, "w", **dst_kwargs) as dst:
+        with rio.open(dst_file, "w", **dst_kwargs) as dst:
             for i in range(1, src.count + 1):
-                reproject(
-                    source=rasterio.band(src, i),
-                    destination=rasterio.band(dst, i),
+                wrp.reproject(
+                    source=rio.band(src, i),
+                    destination=rio.band(dst, i),
                     src_transform=src.transform,
                     src_crs=src.crs,
                     dst_transform=dst_transform,
                     dst_crs=dst_crs,
                     resampling=Resampling.nearest,
                 )
+
 
 def get_file_str(file_path):
     """
