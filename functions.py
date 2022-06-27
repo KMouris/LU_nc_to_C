@@ -55,8 +55,9 @@ def export_to_tif(ds_lon, ds_lat, merged_raster, export_file):
     transform = rio.transform.Affine.translation(-180, 90) * rio.transform.Affine.scale(0.05000000120000000492,
                                                                           -0.05000000119999999798)
 
-    src_crs = '+proj=latlong'
-    dst_crs = "EPSG:32634"
+    dst_crs = '+proj=latlong'
+    #dst_crs = "EPSG:32634"
+    #dst_crs = "EPSG:4326"
     profile = {
         'driver': 'GTiff',
         'height': ds_lat,

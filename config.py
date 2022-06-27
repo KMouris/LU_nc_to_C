@@ -18,6 +18,8 @@ try:
     import rasterio as rio
     from rasterio import warp as wrp
     from rasterio.enums import Resampling
+    #from rasterio.transform import Affine
+    #from rasterio.warp import reproject, Resampling, calculate_default_transform
 
     import matplotlib as math
     from osgeo import gdal
@@ -43,12 +45,14 @@ except ModuleNotFoundError as b:
 
 USELOG = True
 
-c_fac_file = r'C:\Users\Mouris\Desktop\glob_LU_to_C\Data\land_cover.csv'
-xyz_csv_file = r'C:\Users\Mouris\Desktop\glob_LU_to_C\file.csv'
-shape_file = r'C:\Users\Mouris\Desktop\glob_LU_to_C\Data\totalboundary.shp'
+c_fac_file = r'/home/yendras/hiwi/Daten/c-factor/land_cover.csv'
+# Don't change the csv file
+xyz_csv_file = r'file.csv'
+shape_file = r'/home/yendras/hiwi/Daten/Shape_Catchments/totalboundary.shp'
 
-snapraster_file = r'C:\Users\Mouris\Desktop\glob_LU_to_C\Data\Cp_Mean_snap.tif'
+snapraster_file = r'/home/yendras/hiwi/Daten/Rasters/Cp_Mean_snap.tif'
 
-lu_path = r'C:\Users\Mouris\Desktop\glob_LU_to_C\Data\nc_files'
-export_folder = r'export'
-tmp_folder = r'tmp'
+lu_path = r'/home/yendras/hiwi/Daten/Projected_Land_Use'
+#lu_path = r'/home/yendras/hiwi/Daten/szenario/SSP1_RCP2_6'
+export_folder = r'/home/yendras/Downloads/LU_nc_to_C-main/export'
+tmp_folder = r'/home/yendras/Downloads/LU_nc_to_C-main/tmp'
